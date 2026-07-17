@@ -1,4 +1,4 @@
-cd -- ============================================================
+-- ============================================================
 -- Sagar Feeds — Full Database Schema
 -- Run this once against your MySQL database (e.g. `sagarfeeds`)
 --   mysql -u root -p sagarfeeds < schema.sql
