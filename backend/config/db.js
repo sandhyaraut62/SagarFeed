@@ -3,11 +3,18 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
-// Use the CA cert from an environment variable (Render) if available,
-// otherwise fall back to the local file (your PC)
-const sslConfig = process.env.DB_CA_CERT
-  ? { ca: process.env.DB_CA_CERT, rejectUnauthorized: true }
-  : { ca: fs.readFileSync(path.join(__dirname, "certs", "ca.pem")), rejectUnauthorized: true };
+// SSL is only needed for cloud databases (e.g. Aiven, Render).
+// Local MySQL (MySQL Workbench) doesn't need it, so it's skipped unless
+// DB_CA_CERT or DB_USE_SSL is explicitly set.
+let sslConfig = undefined;
+if (process.env.DB_CA_CERT) {
+  sslConfig = { ca: process.env.DB_CA_CERT, rejectUnauthorized: true };
+} else if (process.env.DB_USE_SSL === "true") {
+  sslConfig = {
+    ca: fs.readFileSync(path.join(__dirname, "certs", "ca.pem")),
+    rejectUnauthorized: true,
+  };
+}
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./dashboard.css";
 import { AuthProvider } from "./context/AuthContext.jsx";
-import { CartProvider } from "./context/CartContext.jsx";
+import { FarmerSupportContentProvider } from "./context/FarmerSupportContentContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Layout from "./components/Layout.jsx";
 import DashboardShell from "./components/dashboard/DashboardShell.jsx";
@@ -33,12 +33,6 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx";
 import TermsPage from "./pages/TermsPage.jsx";
 import PrivacyPage from "./pages/PrivacyPage.jsx";
-import CartPage from "./pages/CartPage.jsx";
-import CheckoutPage from "./pages/CheckoutPage.jsx";
-import OrderSuccessPage from "./pages/OrderSuccessPage.jsx";
-import PaymentEsewaCallback from "./pages/PaymentEsewaCallback.jsx";
-import PaymentEsewaFailed from "./pages/PaymentEsewaFailed.jsx";
-
 import DealerOverview from "./pages/dealer/DealerOverview.jsx";
 import DealerOrders from "./pages/dealer/DealerOrders.jsx";
 import DealerInventory from "./pages/dealer/DealerInventory.jsx";
@@ -56,6 +50,7 @@ import AdminDealers from "./pages/admin/AdminDealers.jsx";
 import AdminFarmers from "./pages/admin/AdminFarmers.jsx";
 import AdminOrders from "./pages/admin/AdminOrders.jsx";
 import AdminProducts from "./pages/admin/AdminProducts.jsx";
+import AdminFarmerSupport from "./pages/admin/AdminFarmerSupport.jsx";
 
 const dealerLinks = [
   { label: "Dashboard", to: "/dealer", icon: DashboardIcon, end: true },
@@ -79,13 +74,14 @@ const adminLinks = [
   { label: "Dealers", to: "/admin/dealers", icon: DealersIcon },
   { label: "Farmers", to: "/admin/farmers", icon: AccountsIcon },
   { label: "Orders", to: "/admin/orders", icon: OrdersIcon },
+  { label: "Farmer Support", to: "/admin/farmer-support", icon: TrainingIcon },
 ];
 
 function App() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <Routes>
+      <FarmerSupportContentProvider>
+      <Routes>
           <Route element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
@@ -102,47 +98,6 @@ function App() {
             <Route path="terms" element={<TermsPage />} />
             <Route path="privacy" element={<PrivacyPage />} />
 
-            <Route
-              path="payment/esewa/callback"
-              element={
-                <ProtectedRoute roles={["Farmer", "Dealer"]}>
-                  <PaymentEsewaCallback />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="payment/esewa/failed"
-              element={
-                <ProtectedRoute roles={["Farmer", "Dealer"]}>
-                  <PaymentEsewaFailed />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="cart"
-              element={
-                <ProtectedRoute roles={["Farmer", "Dealer"]}>
-                  <CartPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="checkout"
-              element={
-                <ProtectedRoute roles={["Farmer", "Dealer"]}>
-                  <CheckoutPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="order-success"
-              element={
-                <ProtectedRoute roles={["Farmer", "Dealer"]}>
-                  <OrderSuccessPage />
-                </ProtectedRoute>
-              }
-            />
           </Route>
 
           {/* Dealer dashboard */}
@@ -191,11 +146,12 @@ function App() {
             <Route path="dealers" element={<AdminDealers />} />
             <Route path="farmers" element={<AdminFarmers />} />
             <Route path="orders" element={<AdminOrders />} />
+            <Route path="farmer-support" element={<AdminFarmerSupport />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </CartProvider>
+      </FarmerSupportContentProvider>
     </AuthProvider>
   );
 }

@@ -138,12 +138,70 @@ p {
   color: #154056;
 }
 
-.site-header nav a {
+.site-header nav a,
+.site-header .nav-dropdown-toggle {
   color: var(--ink);
   font-size: 16px;
   font-weight: 700;
   position: relative;
   transition: color 180ms ease, transform 180ms ease;
+}
+
+.site-header .nav-dropdown {
+  position: relative;
+}
+
+.site-header .nav-dropdown-toggle {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.site-header .nav-dropdown-menu {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(13, 44, 58, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  left: 0;
+  min-width: 220px;
+  opacity: 0;
+  padding: 8px;
+  pointer-events: none;
+  position: absolute;
+  top: calc(100% + 12px);
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+  visibility: hidden;
+}
+
+.site-header .nav-dropdown.open .nav-dropdown-menu,
+.site-header .nav-dropdown:hover .nav-dropdown-menu,
+.site-header .nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.site-header .nav-dropdown-link {
+  border-radius: 8px;
+  color: var(--ink);
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 10px;
+  text-decoration: none;
+}
+
+.site-header .nav-dropdown-link:hover,
+.site-header .nav-dropdown-link.active {
+  background: #f4f8fb;
+  color: var(--red);
 }
 
 .site-header nav a::after,
@@ -161,13 +219,17 @@ p {
 }
 
 .site-header nav a:hover,
-.site-header nav a.active {
+.site-header nav a.active,
+.site-header .nav-dropdown-toggle:hover,
+.site-header .nav-dropdown-toggle:focus-visible {
   color: var(--red);
   transform: translateY(-1px);
 }
 
 .site-header nav a:hover::after,
 .site-header nav a.active::after,
+.site-header .nav-dropdown-toggle:hover::after,
+.site-header .nav-dropdown-toggle:focus-visible::after,
 .quick-links a:hover::after,
 .quick-links a.active::after {
   transform: scaleX(1);
@@ -534,30 +596,100 @@ p {
   padding: 34px 40px;
 }
 
+.founder-messages-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
 .founder-message-card {
+  align-items: center;
   background: #BFD5E3;
   border-radius: 24px;
-  padding: 34px 40px;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  min-height: 100%;
+  padding: 28px 32px;
 }
 
-.founder-message-card h3 {
+.founder-text-block {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.founder-text-block h3 {
   color: #1e5171;
-  font-size: 24px;
-  margin-bottom: 16px;
+  font-size: 20px;
+  line-height: 1.3;
+  margin: 0 0 8px;
 }
 
-.founder-message-card p {
+.founder-role {
+  color: #38515f;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.founder-preview p {
   color: #6b6363;
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 1.65;
+  margin-bottom: 12px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
-.founder-message-card strong {
+.founder-text-block strong {
   color: #1e5171;
   display: inline-block;
   font-size: 18px;
   font-weight: 700;
+  margin-top: 8px;
+}
+
+.read-more-btn {
+  background: none;
+  border: none;
+  color: #1e5171;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0;
+}
+
+.read-more-btn:hover,
+.read-more-btn:focus-visible {
+  color: #EC2027;
+}
+
+.founder-image-slot {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px dashed #1e5171;
+  border-radius: 24px;
+  color: #1e5171;
+  display: flex;
+  flex: 0 0 220px;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 220px;
+  padding: 20px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .founder-message-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .founder-image-slot {
+    flex-basis: auto;
+    width: 100%;
+  }
 }
 
 .mission-grid h3 {
@@ -706,6 +838,7 @@ p {
   display: flex;
   flex-direction: column;
   flex: 1;
+  gap: 8px;
   min-height: 250px;
   padding: 18px 24px 24px;
   width: 100%;
@@ -713,15 +846,31 @@ p {
 
 .product-card h2 {
   font-size: 23px;
-  margin-bottom: 14px;
+  margin: 0;
+  text-align: center;
+}
+
+.product-card .product-stage {
+  color: var(--red);
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.product-card .product-price-row {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
   text-align: center;
 }
 
 .product-card p {
   color: #333333;
   font-size: 17px;
-  line-height: 1.1;
-  margin-bottom: 16px;
+  line-height: 1.45;
+  margin: 0;
 }
 
 .product-card ul,

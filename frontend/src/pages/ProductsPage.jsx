@@ -1,95 +1,104 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
 import PageHero from "../components/PageHero.jsx";
-import api from "../api.js";
-import { productImages } from "../content.js";
-import { useAuth } from "../context/AuthContext.jsx";
-import { useCart } from "../context/CartContext.jsx";
+import { productPortfolio } from "../content.js";
 
-const CATEGORY_TABS = [
-  "All Products",
-  "Layer Feed",
-  "Broiler Feed",
-  "Giriraj Feed",
-  "Cattle Feed",
-  "Swine Feed",
-  "Aqua Feed",
-  "Specialized Feed",
-];
+import layerStarter from "../assets/Product-Layer/product-layer-starter.JPG";
+import layerGrower from "../assets/Product-Layer/product-layer-grower.JPG";
+import layerPreLaying from "../assets/Product-Layer/product-layer-pre-laying-SL3.JPG";
+import layerSuperLayingType1 from "../assets/Product-Layer/product-layer-super-laying-Type I.JPG";
+import layerSuperLayingType2 from "../assets/Product-Layer/product-layer-super-laying-Type II.JPG";
 
-const PRODUCT_IMAGE_OVERRIDES = {
-  "Aqua Feed": "product-fish.webp",
-  "Giriraj Feed": "product-giriraj.jpg",
-  "Layer Feed": "product-layer.png",
-  "Calf Feed": "product-calf.jpg",
-  "Heifer Feed": "product-heifer.jpg",
-  "Milky Feed": "product-milky.webp",
-  "Dry Feed": "product-dry.jpg",
-  "Common Quail Feed": "product-quail.jpg",
-  "Goat Feed": "product-goat.jpg",
-  "Horse Feed": "product-horse.jpg",
-};
+import broilerPreStarter from "../assets/Product-Broiler/product-broiler-pre-starter.JPG";
+import broilerStarter from "../assets/Product-Broiler/product-broiler-starter.JPG";
+import broilerFinisher from "../assets/Product-Broiler/product-broiler-finisher.JPG";
 
-function getProductImage(product) {
-  const overrideKey = PRODUCT_IMAGE_OVERRIDES[product.name] || PRODUCT_IMAGE_OVERRIDES[product.category];
-  return (
-    product.image_url ||
-    productImages[overrideKey] ||
-    productImages[product.image] ||
-    productImages["product-broiler.png"]
-  );
+import girirajStarter from "../assets/Product-Giriraj/product-giriraj-starter.JPG";
+import girirajGrower from "../assets/Product-Giriraj/product-giriraj-grower.JPG";
+import girirajFinisher from "../assets/Product-Giriraj/product-giriraj-finisher.JPG";
+
+import cattleCalf from "../assets/Product-Cattle/product-cattle-calf.JPG";
+import cattleHeifer from "../assets/Product-Cattle/product-cattle-heifer.JPG";
+import cattleMilky from "../assets/Product-Cattle/product-cattle-milky.JPG";
+import cattleDry from "../assets/Product-Cattle/product-cattle-dry.JPG";
+
+import swineFattening from "../assets/Product-Swine/product-swine-fattening.JPG";
+import swineLactation from "../assets/Product-Swine/product-swine-lactation.JPG";
+import swineGestation from "../assets/Product-Swine/product-swine-gestation.JPG";
+
+import aquaSinking from "../assets/Product-Aqua/product-aqua-sinking.JPG";
+import aquaFloating from "../assets/Product-Aqua/product-aqua-floating.JPG";
+
+function getProductImage(category, title) {
+  const normalizedCategory = category?.toLowerCase() || "";
+  const normalizedTitle = title?.toLowerCase() || "";
+
+  if (normalizedCategory.includes("layer")) {
+    if (normalizedTitle.includes("starter")) return layerStarter;
+    if (normalizedTitle.includes("grower")) return layerGrower;
+    if (normalizedTitle.includes("pre-laying") || normalizedTitle.includes("sl3")) return layerPreLaying;
+    if (normalizedTitle.includes("type i") || normalizedTitle.includes("type i")) return layerSuperLayingType1;
+    if (normalizedTitle.includes("type ii") || normalizedTitle.includes("type ii")) return layerSuperLayingType2;
+    return layerStarter;
+  }
+
+  if (normalizedCategory.includes("broiler")) {
+    if (normalizedTitle.includes("pre-starter")) return broilerPreStarter;
+    if (normalizedTitle.includes("finisher")) return broilerFinisher;
+    return broilerStarter;
+  }
+
+  if (normalizedCategory.includes("giriraj")) {
+    if (normalizedTitle.includes("grower")) return girirajGrower;
+    if (normalizedTitle.includes("finisher")) return girirajFinisher;
+    return girirajStarter;
+  }
+
+  if (normalizedCategory.includes("cattle")) {
+    if (normalizedTitle.includes("heifer")) return cattleHeifer;
+    if (normalizedTitle.includes("milky") || normalizedTitle.includes("dairy")) return cattleMilky;
+    if (normalizedTitle.includes("dry")) return cattleDry;
+    return cattleCalf;
+  }
+
+  if (normalizedCategory.includes("swine")) {
+    if (normalizedTitle.includes("lactation")) return swineLactation;
+    if (normalizedTitle.includes("gestation")) return swineGestation;
+    return swineFattening;
+  }
+
+  if (normalizedCategory.includes("aqua")) {
+    if (normalizedTitle.includes("floating")) return aquaFloating;
+    return aquaSinking;
+  }
+
+  return null;
 }
 
 function ProductsPage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("All Products");
-  const [addedId, setAddedId] = useState(null);
-
-  const { isAuthenticated } = useAuth();
-  const { addItem } = useCart();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    api
-      .get("/products")
-      .then((res) => setProducts(res.data.products))
-      .catch(() => setError("Could not load the product catalog right now. Please try again later."))
-      .finally(() => setLoading(false));
-  }, []);
 
   const grouped = useMemo(() => {
     const byCategory = {};
-    products.forEach((product) => {
+    productPortfolio.forEach((product) => {
       if (!byCategory[product.category]) byCategory[product.category] = [];
       byCategory[product.category].push(product);
     });
     return byCategory;
-  }, [products]);
+  }, []);
 
+  const categories = ["All Products", ...Object.keys(grouped)];
   const visibleCategories =
     activeTab === "All Products" ? Object.keys(grouped) : [activeTab].filter((c) => grouped[c]);
-
-  const handleAddToCart = (product) => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
-    addItem(product, 1);
-    setAddedId(product.id);
-    setTimeout(() => setAddedId(null), 1500);
-  };
 
   return (
     <>
       <PageHero
         title="Our Products"
-        subtitle="Comprehensive range of nutritionally balanced feed products designed for different livestock needs"
+        subtitle="Explore our feed portfolio with detailed category-specific products and formulations."
       />
 
       <div className="page-wrap tab-row section-pad">
-        {CATEGORY_TABS.map((tab) => (
+        {categories.map((tab) => (
           <button
             key={tab}
             type="button"
@@ -101,42 +110,26 @@ function ProductsPage() {
         ))}
       </div>
 
-      {loading && <p className="page-wrap section-pad">Loading products...</p>}
-      {error && <p className="page-wrap section-pad dash-error">{error}</p>}
-
-      {!loading &&
-        !error &&
-        visibleCategories.map((category) => (
-          <section className="page-wrap section-pad" key={category}>
-            <h2 style={{ marginBottom: 16 }}>{category}</h2>
-            <div className="product-grid">
-              {grouped[category].map((product) => (
-                <article className="product-card hover-card" key={product.id}>
-                  <img
-                    src={getProductImage(product)}
-                    alt={product.name}
-                  />
+      {visibleCategories.map((category) => (
+        <section className="page-wrap section-pad" key={category}>
+          <h2 style={{ marginBottom: 16 }}>{category}</h2>
+          <div className="product-grid">
+            {grouped[category].flatMap((product) =>
+              product.items.map((item) => (
+                <article className="product-card hover-card" key={`${product.category}-${item.title}`}>
+                  <img src={getProductImage(product.category, item.title) || product.image} alt={item.title} />
                   <div>
-                    <h2>{product.name}</h2>
-                    {product.stage && <p className="product-stage">{product.stage}</p>}
-                    <p>{product.description}</p>
-                    <div className="product-price-row">
-                      <strong>Rs. {Number(product.price).toLocaleString()}</strong>
-                      <span className="dash-muted-small"> / {product.unit}</span>
-                    </div>
-                    <button
-                      type="button"
-                      className="button button-primary product-add-btn"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      {addedId === product.id ? "Added ✓" : "Add to Cart"}
-                    </button>
+                    <h2>{item.title}</h2>
+                    <p className="product-stage">{product.brand}</p>
+                    {item.subtitle && <p className="product-price-row">{item.subtitle}</p>}
+                    <p>{item.description}</p>
                   </div>
                 </article>
-              ))}
-            </div>
-          </section>
-        ))}
+              ))
+            )}
+          </div>
+        </section>
+      ))}
     </>
   );
 }

@@ -90,6 +90,7 @@ function AdminProducts() {
         setNotice(`"${form.name}" was added to the catalog.`);
       }
       await loadProducts();
+      window.dispatchEvent(new Event("products-updated"));
       setForm(null);
     } catch (err) {
       alert(err.response?.data?.message || "Could not save this product.");
@@ -104,6 +105,7 @@ function AdminProducts() {
     try {
       await api.delete(`/products/${product.id}`);
       setProducts((prev) => prev.filter((p) => p.id !== product.id));
+      window.dispatchEvent(new Event("products-updated"));
       setNotice(`"${product.name}" was deleted.`);
       if (form?.id === product.id) setForm(null);
     } catch (err) {
@@ -118,6 +120,7 @@ function AdminProducts() {
     try {
       const res = await api.put(`/products/${product.id}`, { isActive: !product.is_active });
       setProducts((prev) => prev.map((p) => (p.id === product.id ? res.data.product : p)));
+      window.dispatchEvent(new Event("products-updated"));
       setNotice(
         `"${product.name}" is now ${res.data.product.is_active ? "visible to farmers and dealers" : "hidden from farmers and dealers"}.`
       );

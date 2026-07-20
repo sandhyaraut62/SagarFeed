@@ -1,8 +1,7 @@
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { assets, navLinks } from "../content.js";
 import { useAuth } from "../context/AuthContext.jsx";
-import { useCart } from "../context/CartContext.jsx";
-import { CartIcon } from "./dashboard/icons.jsx";
 import NotificationBell from "./NotificationBell.jsx";
 
 const DASHBOARD_BY_ROLE = {
@@ -13,11 +12,16 @@ const DASHBOARD_BY_ROLE = {
 
 function Header() {
   const { isAuthenticated, user, logout } = useAuth();
-  const { totalItems } = useCart();
   const navigate = useNavigate();
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
 
   // Keep main links separate from auth links so auth links can be right-aligned
   const primaryLinks = navLinks.filter(([, path]) => path !== "/login" && path !== "/register");
+  const supportLinks = [
+    { label: "Farmer Support", path: "/farmer-support" },
+    { label: "Collaborations", path: "/collaborations" },
+    { label: "Social Responsibility", path: "/social-responsibility" },
+  ];
 
   const handleLogout = () => {
     logout();
@@ -36,16 +40,41 @@ function Header() {
             {label}
           </NavLink>
         ))}
+
+        <div
+          className={`nav-dropdown ${isSupportOpen ? "open" : ""}`}
+          onMouseEnter={() => setIsSupportOpen(true)}
+          onMouseLeave={() => setIsSupportOpen(false)}
+        >
+          <button
+            type="button"
+            className="nav-dropdown-toggle"
+            onClick={() => setIsSupportOpen((prev) => !prev)}
+            onFocus={() => setIsSupportOpen(true)}
+            onBlur={() => setIsSupportOpen(false)}
+            aria-expanded={isSupportOpen}
+            aria-haspopup="menu"
+          >
+            <b>More <span aria-hidden="true">▾</span></b>
+          </button>
+
+          <div className="nav-dropdown-menu" role="menu">
+            {supportLinks.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className="nav-dropdown-link"
+                role="menuitem"
+                onClick={() => setIsSupportOpen(false)}
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
       </nav>
 
       <nav aria-label="Auth navigation" className="auth-nav">
-        {isAuthenticated && user?.role !== "Admin" && (
-          <NavLink to="/cart" className="header-cart-link" aria-label="Cart">
-            <CartIcon />
-            {totalItems > 0 && <span className="header-cart-count">{totalItems}</span>}
-          </NavLink>
-        )}
-
         {isAuthenticated ? (
           <>
             <NotificationBell />
