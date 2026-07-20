@@ -780,6 +780,34 @@
   background: var(--sf-red);
 }
 
+.dash-form-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dash-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sf-navy);
+}
+
+.dash-form-grid input,
+.dash-form-grid textarea {
+  border: 1px solid var(--sf-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--sf-text);
+}
+
+.dash-admin-list {
+  margin-top: 12px;
+}
+
 .dash-actions {
   display: flex;
   gap: 8px;

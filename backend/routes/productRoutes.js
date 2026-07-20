@@ -2,6 +2,53 @@ const express = require("express");
 const db = require("../config/db");
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 
+const fallbackProducts = [
+  {
+    id: 1,
+    category: "Layer Feed",
+    name: "Layer Feed",
+    stage: "Layers",
+    description: "Balanced nutrition for consistent egg production and strong flock health.",
+    price: 0,
+    unit: "per bag",
+    image_url: null,
+    is_active: 1,
+  },
+  {
+    id: 2,
+    category: "Broiler Feed",
+    name: "Broiler Feed",
+    stage: "Broilers",
+    description: "High-performance feed designed for rapid growth and efficient conversion.",
+    price: 0,
+    unit: "per bag",
+    image_url: null,
+    is_active: 1,
+  },
+  {
+    id: 3,
+    category: "Giriraj Feed",
+    name: "Giriraj Feed",
+    stage: "General",
+    description: "Reliable feed for everyday livestock performance and nutrition support.",
+    price: 0,
+    unit: "per bag",
+    image_url: null,
+    is_active: 1,
+  },
+  {
+    id: 4,
+    category: "Cattle Feed",
+    name: "Cattle Feed",
+    stage: "Cattle",
+    description: "Nutritious feed to support milk production and healthy growth.",
+    price: 0,
+    unit: "per bag",
+    image_url: null,
+    is_active: 1,
+  },
+];
+
 const router = express.Router();
 
 function withStockLabel(product) {
@@ -33,6 +80,10 @@ function hasInvalidNumber(...numbers) {
   return numbers.some((number) => !Number.isFinite(number) || number < 0);
 }
 
+function sendFallbackProducts(res) {
+  res.status(200).json({ products: fallbackProducts.map(withStockLabel) });
+}
+
 // GET /api/products — public product catalog (grouped implicitly by category field)
 router.get("/", async (req, res) => {
   try {
@@ -41,8 +92,8 @@ router.get("/", async (req, res) => {
     );
     res.status(200).json({ products: rows.map(withStockLabel) });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Something went wrong. Please try again." });
+    console.error("Product catalog query failed, serving fallback data:", err.message);
+    sendFallbackProducts(res);
   }
 });
 

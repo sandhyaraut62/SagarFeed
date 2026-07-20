@@ -102,6 +102,178 @@ export const productImages = {
   "product-horse.jpg": horseFeed,
 };
 
+export const productPortfolio = [
+  {
+    category: "Layer Feed",
+    brand: "Brands: High Grow, Uttam, Unnat",
+    image: layerFeed,
+    items: [
+      {
+        title: "Starter (L1)",
+        subtitle: "0–5 Weeks",
+        description: "Early-stage feed for young layers with balanced energy, protein and gut health support.",
+      },
+      {
+        title: "Grower (L2)",
+        subtitle: "5–18 Weeks",
+        description: "Supports strong skeletal development and uniform bird growth during rearing.",
+      },
+      {
+        title: "Pre-Laying (SL3)",
+        subtitle: "18–22 Weeks",
+        description: "Prepares birds for laying with higher minerals and vitamins for reproductive health.",
+      },
+      {
+        title: "Super Laying (L3 Type I)",
+        subtitle: "22–45 Weeks",
+        description: "Designed for peak egg production with strong shell quality and stable performance.",
+      },
+      {
+        title: "Super Laying (L3 Type II)",
+        subtitle: "Above 45 Weeks",
+        description: "Mature layer feed to maintain production and support long-term flock health.",
+      },
+    ],
+  },
+  {
+    category: "Broiler Feed",
+    brand: "Brands: High Grow, Uttam, Unnat",
+    image: broilerFeed,
+    items: [
+      {
+        title: "Pre-Starter (BPS)",
+        subtitle: "0–12 Days",
+        description: "High-energy starter formula for chicks to build immunity and early growth.",
+      },
+      {
+        title: "Starter (B1)",
+        subtitle: "13–24 Days",
+        description: "Balanced feed to support efficient growth and healthy body development.",
+      },
+      {
+        title: "Finisher (B2 & B3)",
+        subtitle: "Above 25 Days",
+        description: "Finish feed for rapid weight gain and meat quality before market.",
+      },
+    ],
+  },
+  {
+    category: "Giriraj Feed",
+    brand: "Brand: Uttam",
+    image: girirajFeed,
+    items: [
+      {
+        title: "Starter (G1)",
+        subtitle: "0–5 Weeks",
+        description: "Starter feed for early giriraj pullets with premium nutrition.",
+      },
+      {
+        title: "Grower (G2)",
+        subtitle: "5–18 Weeks",
+        description: "Growth-phase feed for consistent development and flock uniformity.",
+      },
+      {
+        title: "Finisher (G3)",
+        subtitle: "Above 18 Weeks",
+        description: "Finish feed crafted for maturity and optimal production readiness.",
+      },
+    ],
+  },
+  {
+    category: "Cattle Feed",
+    brand: "Uttam",
+    image: milkyFeed,
+    items: [
+      {
+        title: "Calf Feed",
+        subtitle: "Starter (CSF) and Grower (CGF)",
+        description: "Nutrient-dense feed for calves, supporting healthy growth and immunity.",
+      },
+      {
+        title: "Heifer Feed",
+        subtitle: "",
+        description: "Balanced heifer feed for development before breeding.",
+      },
+      {
+        title: "Milky Feed",
+        subtitle: "Sulav / Super / Dairy Special / Premium",
+        description: "Milk-yield formulas for different production levels and lactation needs.",
+      },
+      {
+        title: "Dry Feed",
+        subtitle: "For non-lactating maintenance",
+        description: "Maintenance feed to keep dry cows healthy and in good condition.",
+      },
+    ],
+  },
+  {
+    category: "Swine Feed",
+    brand: "High Grow || Uttam",
+    image: pigFeed,
+    items: [
+      {
+        title: "Fattening",
+        subtitle: "P1 (Starter), P2 (Grower), P3 (Finisher)",
+        description: "Complete fattening feed program supporting all growth stages.",
+      },
+      {
+        title: "Lactation",
+        subtitle: "",
+        description: "Formulated for nursing sows to ensure strong milk production.",
+      },
+      {
+        title: "Gestation",
+        subtitle: "",
+        description: "Balanced nutrition for pregnant sows to support fetal development.",
+      },
+    ],
+  },
+  {
+    category: "Aqua Feed",
+    brand: "Uttam || Unnat",
+    image: fishFeed,
+    items: [
+      {
+        title: "Sinking Feeds",
+        subtitle: "F1 (Starter), F2 (Grower), F3 (Finisher)",
+        description: "Sinking feed variants for efficient pond and tank culture growth.",
+      },
+      {
+        title: "Floating Feeds",
+        subtitle: "",
+        description: "Floating feed option for easy feeding and water-surface visibility.",
+      },
+    ],
+  },
+  {
+    category: "On Demand & Specialized Feed",
+    brand: "Custom production is available for",
+    image: duckFeed,
+    items: [
+      {
+        title: "Duck Feed",
+        subtitle: "",
+        description: "Specialized feed designed to support duck growth and egg production.",
+      },
+      {
+        title: "Common Quail Feed",
+        subtitle: "",
+        description: "Complete nutrition formula for quail farming performance.",
+      },
+      {
+        title: "Goat Feed",
+        subtitle: "",
+        description: "Balanced goat feed for healthy growth and productivity.",
+      },
+      {
+        title: "Horse Feed",
+        subtitle: "",
+        description: "Specialized feed for maintaining horse condition and stamina.",
+      },
+    ],
+  },
+];
+
 export const products = [
   {
     title: "Broiler Feed",

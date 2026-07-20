@@ -1,17 +1,4 @@
-const services = [
-  {
-    title: "Field Visits",
-    text: "Our veterinary team conducts scheduled farm visits to monitor livestock health and catch issues early.",
-  },
-  {
-    title: "Disease Prevention",
-    text: "Guidance on vaccination schedules, biosecurity, and hygiene practices to keep your animals healthy.",
-  },
-  {
-    title: "Emergency Consultation",
-    text: "Reach out to our support team for urgent livestock health concerns and get guidance on next steps.",
-  },
-];
+import { useFarmerSupportContent } from "../../context/FarmerSupportContentContext.jsx";
 
 const contact = {
   phone: "025-582841",
@@ -20,6 +7,8 @@ const contact = {
 };
 
 function FarmerVetSupport() {
+  const { vetServices } = useFarmerSupportContent();
+
   return (
     <div className="dash-stack">
       <section className="dash-panel">
@@ -27,7 +16,7 @@ function FarmerVetSupport() {
           <h2>Veterinary Support Services</h2>
         </div>
         <div className="dash-info-grid">
-          {services.map((service) => (
+          {vetServices.map((service) => (
             <article key={service.title} className="dash-info-card">
               <h3>{service.title}</h3>
               <p>{service.text}</p>
